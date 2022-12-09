@@ -1,4 +1,4 @@
-//Setting the buttons
+//Elements setting
 
 var numberButtons = new Array (10);
 for (let i = 0; i < numberButtons.length; i++)
@@ -19,7 +19,7 @@ for (let i = 0; i < modificationButtons.length; i++)
 var equalButton = document.getElementById("equalTo");
 
 
-// Displaying the things on the calculator
+// Displaying
 
 for (let i = 0; i < numberButtons.length; i++)
 {
@@ -36,6 +36,8 @@ function addToScreen (number)
     screen.textContent += number;
 }
 
+
+//Deleting
 // The following code will first take out the deleted number/modificator from the array, to then take it out from the screen
 
 deleteButton.addEventListener("click", function () {
@@ -66,7 +68,6 @@ deleteButton.addEventListener("click", function () {
 
 
 // Data reading
-
 // The following code organizes all the fators typed in the calculator into a single array with all the factors
 
 for (let i = 0; i < numberButtons.length; i++)
@@ -84,20 +85,23 @@ function factorsSetting (number)
         factors.push(number.toString());
         firstFactorNumber = false;
     }
+    //If it is the first digit of the factor, it creates a new element in the array corresponding to the factor. It is made in string because it is easier to add the other digits later.
     else
     {
         factors[factors.length - 1] += number.toString();
     }
-}
+    //If it is just adding a digit to an existing factor, then it will do so.
+}   
 
 for (let i = 0; i < modificationButtons.length; i++)
 {
     modificationButtons[i].addEventListener ("click", function() {firstFactorNumber = true;});
 }
+//When a new modificator is added, it means that the factor before is complete and there is no more digits to add, therefore the next number clicked on the calculator must be a new factor.
 
 
-// Now the following code will create an array with all the accounts to make with the numbers
-// The index of each acount will be the index of the first factor's account and it's value will represent the kind of account
+// Now the following code will create an array with all the calculations that will be made with the factors
+// The index of each calculation will be the index of the first factor's calculation and it's value will represent the kind of calculation
 /*
 0 = division
 1 = multiplication
@@ -131,7 +135,9 @@ function modificatorsSetting (modificator)
     }
 }
 
+
 // Count making
+//The algorith down is not good for big amounts of data because it has O(n^2), but once the program only uses small amounts of data, it works fine.
 
 var result;
 
@@ -144,7 +150,7 @@ function calculation(factors, modificators)
     while (factors.length > 1)
     {
 
-        //The following while loop will run while we have multiplications and divisions
+        //The following "while" loop will run while we have multiplications and divisions, because these operations must be make first
         while (modificators.indexOf(0) != -1 || modificators.indexOf(1) != -1)
         {
 
@@ -162,6 +168,7 @@ function calculation(factors, modificators)
             else
             {
                 result = parseInt(factors[modificators.indexOf(1)], 10) * parseInt(factors[modificators.indexOf(1) + 1], 10);
+
                 factors[modificators.indexOf(1)] = result;
                 factors.splice(modificators.indexOf(1) + 1, 1);
                 modificators.splice(modificators.indexOf(1), 1);
@@ -172,6 +179,7 @@ function calculation(factors, modificators)
         if (modificators.indexOf(2) < modificators.indexOf(3) && modificators.indexOf(2) != -1)
         {
             result = parseInt(factors[modificators.indexOf(2)], 10) - parseInt(factors[modificators.indexOf(2) + 1], 10);
+
             factors[modificators.indexOf(2)] = result;
             factors.splice(modificators.indexOf(2) + 1, 1);
             modificators.splice(modificators.indexOf(2), 1);
@@ -179,6 +187,7 @@ function calculation(factors, modificators)
         else if (modificators.indexOf(3) != -1)
         {
             result = parseInt(factors[modificators.indexOf(3)], 10) + parseInt(factors[modificators.indexOf(3) + 1], 10);
+            
             factors[modificators.indexOf(3)] = result;
             factors.splice(modificators.indexOf(3) + 1, 1);
             modificators.splice(modificators.indexOf(3), 1);
